@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTECH Payroll</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="/GTECH PAYROLL SYSTEM/GTech_Innovations_Logo.png" width="100px"/>
+    </div>
+    
+  
+    <div class="nav-item active" onclick="showPage('dashboard', this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('employees', this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="18" cy="7" r="3"/><path d="M21 21v-1.5a3 3 0 00-2-2.83"/></svg>
+      Employees
+    </div>
+    <div class="nav-item" onclick="showPage('payroll', this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="8" cy="15" r="1"/></svg>
+      Payroll
+    </div>
+    <div class="nav-item" onclick="showPage('payslips', this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      Payslips
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Settings
+    </div>
+
+      
+    
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- Dashboard -->
+    <div id="page-dashboard" class="page active">
+      <h2>Dashboard</h2>
+      <div class="metric-grid" id="dash-metrics"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Department breakdown</span></div>
+          <div id="dept-breakdown"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Recent employees</span></div>
+          <div id="recent-employees"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees -->
+    <div id="page-employees" class="page">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+        <h2 style="margin:0">Employees</h2>
+        <button class="btn btn-primary" onclick="openEmployeeModal()">+ Add employee</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table>
+          <thead><tr><th>Name</th><th>Department</th><th>Role</th><th>Gross salary</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="employee-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Payroll -->
+    <div id="page-payroll" class="page">
+      <h2>Payroll processing</h2>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Run payroll</span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <select id="payroll-month" style="width:auto;">
+              <option>January</option><option>February</option><option>March</option>
+              <option>April</option><option>May</option><option>June</option>
+              <option>July</option><option>August</option><option>September</option>
+              <option>October</option><option>November</option><option>December</option>
+            </select>
+            <select id="payroll-year" style="width:auto;">
+              <option>2024</option><option>2025</option><option selected>2026</option>
+            </select>
+            <button class="btn btn-primary" onclick="runPayroll()">Run payroll</button>
+          </div>
+        </div>
+        <div id="payroll-alert"></div>
+        <table>
+          <thead><tr><th>Employee</th><th>Department</th><th>Gross (ZMW)</th><th>NAPSA (5%)</th><th>NHIMA (1%)</th><th>PAYE</th><th>Net pay (ZMW)</th></tr></thead>
+          <tbody id="payroll-table"></tbody>
+        </table>
+        <div id="payroll-totals" style="margin-top:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- Payslips -->
+    <div id="page-payslips" class="page">
+      <h2>Payslips</h2>
+      <div class="card">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+          <select id="slip-employee" style="width:auto;flex:1;min-width:160px;"><option value="">Select employee...</option></select>
+          <select id="slip-month" style="width:auto;">
+            <option>January</option><option>February</option><option>March</option>
+            <option>April</option><option>May</option><option>June</option>
+            <option>July</option><option>August</option><option>September</option>
+            <option>October</option><option>November</option><option>December</option>
+          </select>
+          <select id="slip-year" style="width:auto;"><option>2024</option><option>2025</option><option selected>2026</option></select>
+          <button class="btn btn-primary" onclick="generatePayslip()">Generate payslip</button>
+        </div>
+        <div id="payslip-output"></div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="page-settings" class="page">
+      <h2>Settings</h2>
+      <div class="card" style="max-width:480px;">
+        <div class="card-title" style="margin-bottom:1rem;">Tax &amp; deduction rates</div>
+        <div class="form-group"><label>NAPSA contribution (%)</label><input type="number" id="set-napsa" value="5" step="0.5" min="0" max="20"></div>
+        <div class="form-group"><label>NHIMA contribution (%)</label><input type="number" id="set-nhima" value="1" step="0.1" min="0" max="5"></div>
+        <div class="form-group"><label>Company name</label><input type="text" id="set-company" value="Zambia Corp Ltd"></div>
+        <div id="settings-alert"></div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
+      </div>
+      <div class="card" style="max-width:480px;margin-top:1.25rem;">
+        <div class="card-title" style="margin-bottom:6px;">Zambia PAYE tax bands (2024)</div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;">Income Tax Act rates applied automatically during payroll run.</p>
+        <table>
+          <thead><tr><th>Monthly income (ZMW)</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Up to 4,800</td><td>0% (exempt)</td></tr>
+            <tr><td>4,801 – 9,200</td><td>20%</td></tr>
+            <tr><td>9,201 – 15,200</td><td>30%</td></tr>
+            <tr><td>Above 15,200</td><td>37.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Employee Modal -->
+<div class="modal-bg" id="emp-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Add employee</span>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>First name</label><input id="f-fname" placeholder="e.g. Chanda"></div>
+      <div class="form-group"><label>Last name</label><input id="f-lname" placeholder="e.g. Mwansa"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Department</label>
+        <select id="f-dept">
+          <option>Finance</option><option>Human Resources</option><option>IT</option>
+          <option>Operations</option><option>Sales</option><option>Management</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Role / job title</label><input id="f-role" placeholder="e.g. Accountant"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Gross monthly salary (ZMW)</label><input id="f-salary" type="number" placeholder="e.g. 12000"></div>
+      <div class="form-group"><label>Bonus / allowance (ZMW)</label><input id="f-bonus" type="number" placeholder="0" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Start date</label><input id="f-date" type="date"></div>
+      <div class="form-group"><label>Status</label>
+        <select id="f-status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:0.5rem;">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Save employee</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
